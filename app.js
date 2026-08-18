@@ -1,6 +1,7 @@
+import { auth, db } from "./firebase.js";
 const TZ="Asia/Kolkata",target=new Date(PROGRESS_DATA.testDate);
 function parts(){return Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hour12:false}).formatToParts(new Date()).map(x=>[x.type,x.value]))}
-function dayKey(){let p=parts(),d=new Date(`${p.year}-${p.month}-${p.day}T00:00:00+05:30`);if(+p.hour<4)d.setDate(d.getDate()-1);return d.toISOString().slice(0,10)}
+function dayKey(){let p=parts(),d=new Date(`${p.year}-${p.month}-${p.day}T00:00:00+05:30`);if(+p.hour<4)d.setDate(d.getDate()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function label(k){return new Intl.DateTimeFormat("en-IN",{timeZone:TZ,day:"2-digit",month:"short",year:"numeric"}).format(new Date(`${k}T12:00:00+05:30`))}
 const key=dayKey(),base=PROGRESS_DATA.history[key]||{lectures:[false,false,false],questions:false,revision:false,coaching:false};
 let d=JSON.parse(localStorage.getItem("serup-"+key)||"null")||structuredClone(base);
